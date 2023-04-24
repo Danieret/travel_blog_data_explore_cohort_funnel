@@ -182,20 +182,72 @@ ORDER BY DATE(first_time_readers.my_date);
 
 
 -- purchases
+SELECT * FROM purchases LIMIT 10;
+
+SELECT COUNT(*) FROM purchases LIMIT 10; --8407
+
+SELECT SUM(paid) FROM purchases LIMIT 10; --194480 dollars
+
+SELECT SUM(paid) FROM purchases WHERE paid = 80 LIMIT 10; --141360 dollars from video course
+
+SELECT SUM(paid) FROM purchases WHERE paid = 8 LIMIT 10; -- 53120 dollars from ebook
+
+SELECT DATE (my_date),
+       SUM(paid)
+FROM purchases
+GROUP BY DATE (my_date)
+ORDER BY DATE (my_date); -- income per day
+
+SELECT DATE (my_date),
+       SUM(paid)
+FROM purchases
+WHERE paid = 80
+GROUP BY DATE (my_date)
+ORDER BY DATE (my_date); -- daily income from video courses
+
+SELECT DATE (my_date),
+       SUM(paid)
+FROM purchases
+WHERE paid = 8
+GROUP BY DATE (my_date)
+ORDER BY DATE (my_date); -- daily income from ebook
+
+---
+
+
+SELECT first_time_readers.source, SUM(purchases.paid)
+FROM first_time_readers
+JOIN purchases ON first_time_readers.user_id = purchases.user_id
+GROUP BY first_time_readers.source
+ORDER BY SUM DESC; -- Reddit	89760, SEO	77056, AdWords	27664
+
+
+
+SELECT first_time_readers.source, first_time_readers.country, SUM(purchases.paid)
+FROM first_time_readers
+JOIN purchases ON first_time_readers.user_id = purchases.user_id
+GROUP BY first_time_readers.source, first_time_readers.country
+ORDER BY SUM DESC; -- REDDIT SEO country 5,2,7
+
+
+SELECT first_time_readers.continent, SUM(purchases.paid)
+FROM first_time_readers
+JOIN purchases ON first_time_readers.user_id = purchases.user_id
+GROUP BY first_time_readers.continent
+ORDER BY SUM DESC; -- Asia	112080, North America	43888
+
+-----
 
 
 
 
+--- costumers purchases and their registration day
 
-
-
-
-
-
-
-
-
-
+SELECT DATE(first_time_readers.my_date), SUM(purchases.paid)
+FROM first_time_readers
+JOIN purchases ON first_time_readers.user_id = purchases.user_id
+GROUP BY DATE(first_time_readers.my_date)
+ORDER BY DATE(first_time_readers.my_date);
 
 
 
