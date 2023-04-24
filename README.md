@@ -1,0 +1,2 @@
+# dilans_blog_data_explore_in_sql
+PostgresSQL_segmentation_exploratory analysis
