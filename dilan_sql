@@ -1,0 +1,184 @@
+-- DILAN'S BLOG
+
+
+CREATE TABLE first_time_readers (
+my_date TEXT,
+event_type TEXT,
+country TEXT,
+user_id BIGINT,
+source TEXT,
+continent TEXT);
+
+COMMIT;
+
+COPY first_time_readers FROM '/home/dataguy88/dilan_travel_guide/first_time_readers.csv' DELIMITER ';';
+
+COMMIT;
+
+SELECT * FROM first_time_readers LIMIT 10;
+
+--------------------------------------------
+
+
+CREATE TABLE returning_readers (
+my_date TEXT,
+event_type TEXT,
+country TEXT,
+user_id BIGINT,
+continent TEXT);
+
+COMMIT;
+
+
+COPY returning_readers FROM '/home/dataguy88/dilan_travel_guide/returning_readers.csv' DELIMITER ';';
+
+
+COMMIT;
+
+SELECT * FROM returning_readers LIMIT 10;
+
+-----------------------------------------------
+
+CREATE TABLE subscribers (
+my_date TEXT,
+event_type TEXT,
+user_id BIGINT);
+
+
+COMMIT;
+
+
+COPY subscribers FROM '/home/dataguy88/dilan_travel_guide/subscribers.csv' DELIMITER ';';
+
+
+COMMIT;
+
+SELECT * FROM subscribers LIMIT 10;
+-----------------------------------
+
+CREATE TABLE purchases (
+my_date TEXT,
+event_type TEXT,
+user_id BIGINT,
+paid INT);
+
+
+COMMIT;
+
+
+COPY purchases FROM '/home/dataguy88/dilan_travel_guide/purchases.csv' DELIMITER ';';
+
+
+COMMIT;
+
+SELECT * FROM purchases LIMIT 10;
+
+------------------------------------------------
+
+
+
+
+
+SELECT * FROM first_time_readers LIMIT 10;
+SELECT * FROM returning_readers LIMIT 10;
+SELECT * FROM subscribers LIMIT 10;
+SELECT * FROM purchases LIMIT 10;
+
+
+-- Dilan's want to focus only for one country!
+
+-- first_time_readers segmentation : country, source, continent
+SELECT COUNT (*) FROM first_time_readers; -- 210023
+
+SELECT country, COUNT(*) FROM first_time_readers GROUP BY country ORDER BY COUNT DESC; -- country_7	51791, country_2	50675, country_5	40349
+
+SELECT source, COUNT(*) FROM first_time_readers GROUP BY source ORDER BY COUNT DESC; -- Reddit	105216, AdWords	63065, SEO	41742
+
+SELECT continent, COUNT(*) FROM first_time_readers GROUP BY continent ORDER BY COUNT DESC; -- Asia	76092, Europe	39561, North America	37567
+
+SELECT source, continent, country, COUNT(*) FROM first_time_readers GROUP BY source, continent, country ORDER BY COUNT DESC; -- Reddit	Asia	country_7	12950, Reddit	Asia	country_2	12857, Reddit	Asia	country_5	10065
+
+
+
+-- returning_readers explore : country, source, continent
+SELECT COUNT (*) FROM returning_readers; -- 371854
+
+SELECT COUNT(DISTINCT returning_readers.user_id) FROM returning_readers; -- 66231 !!!
+
+
+SELECT country, COUNT (*) FROM returning_readers GROUP BY country ORDER BY COUNT DESC ; -- country_5	109383, country_7	80276, country_2	79401
+
+SELECT continent, COUNT (*) FROM returning_readers GROUP BY continent ORDER BY COUNT DESC ; --Asia	118833, North America	92767, Europe	54136, South America	51706
+
+SELECT continent, country, COUNT (*) FROM returning_readers GROUP BY continent, country ORDER BY COUNT DESC ; -- Asia	country_5	35316, North America country_5	26660, Asia	country_2	25406, Asia	country_7	25399
+
+
+-- SELECT * FROM first_time_readers JOIN returning_readers ON first_time_readers.user_id = returning_readers.user_id LIMIT 10;
+-- SELECT DISTINCT returning_readers.user_id FROM first_time_readers JOIN returning_readers ON first_time_readers.user_id = returning_readers.user_id LIMIT 10;
+
+-- returning readers comes from Reddit and SEO....from country...
+SELECT source,
+       country,
+       COUNT(*)
+FROM (SELECT DISTINCT returning_readers.user_id,
+             first_time_readers.source,
+             returning_readers.country
+      FROM first_time_readers
+        JOIN returning_readers ON first_time_readers.user_id = returning_readers.user_id) AS original_query
+GROUP BY source, country
+ORDER BY COUNT DESC; -- Reddit	country_5	9154, Reddit	country_7	7005, Reddit	country_2	6965, SEO	country_5	6420, SEO	country_7	5828, SEO	country_2	5723
+
+-- from country 5,7...
+SELECT country,
+       COUNT(*)
+FROM (SELECT DISTINCT returning_readers.user_id,
+             returning_readers.country
+      FROM first_time_readers
+        JOIN returning_readers ON first_time_readers.user_id = returning_readers.user_id) AS original_query
+GROUP BY country
+ORDER BY COUNT DESC; -- country_5	19477, country_7	14417, country_2	14269, country_4	10167
+
+
+
+-- subscribers: 
+
+SELECT COUNT(*) FROM subscribers LIMIT 10; -- 7618 subscriber
+
+SELECT continent, COUNT(*)
+FROM first_time_readers
+JOIN subscribers ON first_time_readers.user_id = subscribers.user_id GROUP BY continent ORDER BY COUNT DESC; -- subscribers first time visit was : Asia	4364, North America	1717, Europe	1033
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
