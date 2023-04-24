@@ -1,4 +1,4 @@
--- DILAN'S BLOG
+-- TRAVEL BLOG
 
 
 CREATE TABLE first_time_readers (
@@ -90,6 +90,12 @@ SELECT * FROM purchases LIMIT 10;
 -- first_time_readers segmentation : country, source, continent
 SELECT COUNT (*) FROM first_time_readers; -- 210023
 
+SELECT DATE(my_date), COUNT(*)
+FROM first_time_readers
+GROUP BY DATE(my_date)
+ORDER BY DATE(first_time_readers.my_date);-- 1795 to 3013
+
+
 SELECT country, COUNT(*) FROM first_time_readers GROUP BY country ORDER BY COUNT DESC; -- country_7	51791, country_2	50675, country_5	40349
 
 SELECT source, COUNT(*) FROM first_time_readers GROUP BY source ORDER BY COUNT DESC; -- Reddit	105216, AdWords	63065, SEO	41742
@@ -105,6 +111,10 @@ SELECT COUNT (*) FROM returning_readers; -- 371854
 
 SELECT COUNT(DISTINCT returning_readers.user_id) FROM returning_readers; -- 66231 !!!
 
+SELECT DATE(my_date), COUNT(*)
+FROM returning_readers
+GROUP BY DATE(my_date)
+ORDER BY DATE(my_date); -- growing tendenci until the last day? 20180331 - 132? (not a completed day)
 
 SELECT country, COUNT (*) FROM returning_readers GROUP BY country ORDER BY COUNT DESC ; -- country_5	109383, country_7	80276, country_2	79401
 
@@ -147,6 +157,50 @@ SELECT COUNT(*) FROM subscribers LIMIT 10; -- 7618 subscriber
 SELECT continent, COUNT(*)
 FROM first_time_readers
 JOIN subscribers ON first_time_readers.user_id = subscribers.user_id GROUP BY continent ORDER BY COUNT DESC; -- subscribers first time visit was : Asia	4364, North America	1717, Europe	1033
+
+
+
+SELECT *
+FROM first_time_readers
+JOIN subscribers ON first_time_readers.user_id = subscribers.user_id LIMIT 10;
+
+
+
+
+SELECT DATE(first_time_readers.my_date), COUNT(*)
+FROM first_time_readers
+JOIN subscribers ON first_time_readers.user_id = subscribers.user_id
+GROUP BY DATE(first_time_readers.my_date)
+ORDER BY DATE(first_time_readers.my_date); -- Drastically decreasing subscriber count !!! last date is 2018 03 24
+
+
+SELECT DATE(first_time_readers.my_date),first_time_readers.country, COUNT(*)
+FROM first_time_readers
+JOIN subscribers ON first_time_readers.user_id = subscribers.user_id
+GROUP BY DATE(first_time_readers.my_date), first_time_readers.country
+ORDER BY DATE(first_time_readers.my_date);
+
+
+-- purchases
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
