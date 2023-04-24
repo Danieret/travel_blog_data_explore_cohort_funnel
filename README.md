@@ -1,7 +1,7 @@
-# dilans_blog_data_explore_in_sql
+# travel_blog_data_explore_in_sql
 PostgresSQL_segmentation_exploratory analysis
 
-Dilan wants to spend more time and more money on his business. He wants to focus on one country first.
+ Customer wants to spend more time and more money on his business. He wants to focus on one country first.
 
 So the main questions are:
 1 - In which country should he prioritise his effort and why?
