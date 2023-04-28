@@ -1,5 +1,8 @@
-# travel_blog_data_explore_in_sql
+# travel_blog_data_explore_cohort_funnel
+
+
 PostgresSQL_segmentation_exploratory analysis
+After performing exploratory analysis, I continued making a cohort analysis in Python.
 
  Customer wants to spend more time and more money on his business. He wants to focus on one country first.
 
