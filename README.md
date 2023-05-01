@@ -3,6 +3,7 @@
 
 PostgresSQL_segmentation_exploratory analysis
 After performing exploratory analysis, I continued making a cohort analysis in Python.
+The presentation and the SQL and Python codes are on the master branch.
 
  Customer wants to spend more time and more money on his business. He wants to focus on one country first.
 
